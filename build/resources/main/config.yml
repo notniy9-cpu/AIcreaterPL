@@ -1,0 +1,17 @@
+# Режимы: "mock" (тестовый), "ollama" (бесплатный локальный), "openai" (платный)
+provider: "mock"
+
+# Настройки OpenAI (только если provider: "openai")
+openai:
+  api-key: "your-api-key-here"
+  endpoint: "https://api.openai.com/v1/chat/completions"
+  model: "gpt-3.5-turbo"
+
+# Настройки Ollama (только если provider: "ollama")
+ollama:
+  endpoint: "http://localhost:11434/api/generate"
+  model: "llama3.2"
+
+# Настройки построек
+building:
+  max-blocks: 5000

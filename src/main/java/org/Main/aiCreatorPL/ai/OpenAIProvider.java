@@ -82,16 +82,29 @@ public class OpenAIProvider implements AIProvider {
                 requestBody.addProperty("temperature", temperature);
 
                 String response = sendRequest(requestBody.toString());
-                JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
-                if (json.has("error")) {
-                    return "§cОшибка: " + json.get("error").toString();
+                // ИСПРАВЛЕНО: Лучшая обработка JSON
+                try {
+                    JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+
+                    if (json.has("error")) {
+                        return "§cОшибка API: " + json.get("error").getAsJsonObject().get("message").getAsString();
+                    }
+
+                    if (json.has("choices") && json.getAsJsonArray("choices").size() > 0) {
+                        String content = json.getAsJsonArray("choices")
+                                .get(0).getAsJsonObject()
+                                .getAsJsonObject("message")
+                                .get("content").getAsString();
+                        return content;
+                    } else {
+                        return "§cНеожиданный ответ от API";
+                    }
+
+                } catch (Exception e) {
+                    // Если JSON не распарсился, возвращаем текст ошибки
+                    return "§cОшибка: Неверный ответ от сервера. Попробуйте позже.";
                 }
-
-                return json.getAsJsonArray("choices")
-                        .get(0).getAsJsonObject()
-                        .getAsJsonObject("message")
-                        .get("content").getAsString();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -122,16 +135,26 @@ public class OpenAIProvider implements AIProvider {
                 requestBody.addProperty("temperature", temperature);
 
                 String response = sendRequest(requestBody.toString());
-                JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
-                if (json.has("error")) {
-                    return "{\"error\": \"" + json.get("error").toString() + "\"}";
+                try {
+                    JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+
+                    if (json.has("error")) {
+                        return "{\"error\": \"" + json.get("error").getAsJsonObject().get("message").getAsString() + "\"}";
+                    }
+
+                    if (json.has("choices") && json.getAsJsonArray("choices").size() > 0) {
+                        return json.getAsJsonArray("choices")
+                                .get(0).getAsJsonObject()
+                                .getAsJsonObject("message")
+                                .get("content").getAsString();
+                    } else {
+                        return "{\"error\": \"Пустой ответ от API\"}";
+                    }
+
+                } catch (Exception e) {
+                    return "{\"error\": \"Ошибка парсинга ответа\"}";
                 }
-
-                return json.getAsJsonArray("choices")
-                        .get(0).getAsJsonObject()
-                        .getAsJsonObject("message")
-                        .get("content").getAsString();
 
             } catch (Exception e) {
                 e.printStackTrace();

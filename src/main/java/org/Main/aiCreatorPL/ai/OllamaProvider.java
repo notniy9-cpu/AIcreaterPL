@@ -66,13 +66,23 @@ public class OllamaProvider implements AIProvider {
                 requestBody.addProperty("stream", false);
 
                 String response = sendRequest(requestBody.toString());
-                JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
-                if (json.has("error")) {
-                    return "§cОшибка: " + json.get("error").getAsString();
+                try {
+                    JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+
+                    if (json.has("error")) {
+                        return "§cОшибка: " + json.get("error").getAsString();
+                    }
+
+                    if (json.has("response")) {
+                        return json.get("response").getAsString();
+                    } else {
+                        return "§cНеожиданный ответ от Ollama";
+                    }
+
+                } catch (Exception e) {
+                    return "§cОшибка парсинга ответа от Ollama";
                 }
-
-                return json.get("response").getAsString();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -95,13 +105,23 @@ public class OllamaProvider implements AIProvider {
                 requestBody.addProperty("stream", false);
 
                 String response = sendRequest(requestBody.toString());
-                JsonObject json = JsonParser.parseString(response).getAsJsonObject();
 
-                if (json.has("error")) {
-                    return "{\"error\": \"" + json.get("error").getAsString() + "\"}";
+                try {
+                    JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+
+                    if (json.has("error")) {
+                        return "{\"error\": \"" + json.get("error").getAsString() + "\"}";
+                    }
+
+                    if (json.has("response")) {
+                        return json.get("response").getAsString();
+                    } else {
+                        return "{\"error\": \"Пустой ответ от Ollama\"}";
+                    }
+
+                } catch (Exception e) {
+                    return "{\"error\": \"Ошибка парсинга ответа\"}";
                 }
-
-                return json.get("response").getAsString();
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -1,23 +1,7 @@
-# Выбор провайдера: "openai" или "ollama"
-provider: "openai"
-
-# Настройки OpenAI
-openai:
-  api-key: "your-api-key-here"
-  endpoint: "https://api.openai.com/v1/chat/completions"
-  model: "gpt-3.5-turbo"
-  max-tokens: 2000
-  temperature: 0.7
-
-# Настройки Ollama
-ollama:
-  endpoint: "http://localhost:11434/api/generate"
-  model: "llama3"
+# Ставим mock режим
+provider: "mock"
 
 # Настройки построек
 building:
   max-blocks: 5000
-  prompt-prefix: |
-    Ты - помощник для генерации построек в Minecraft.
-    Ответь JSON объектом: {"blocks": [{"x": 0, "y": 0, "z": 0, "material": "oak_planks"}]}
-    Используй материалы: oak_planks, oak_log, stone_bricks, glass_pane
+  prompt-prefix: "Ты помощник в Minecraft"

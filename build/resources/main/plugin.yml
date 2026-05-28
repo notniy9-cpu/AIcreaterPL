@@ -1,0 +1,14 @@
+name: AICreatorPL
+version: 1.0.0
+main: org.Main.aiCreatorPL.AICreatorPL
+api-version: 1.20
+author: notniy9
+
+commands:
+  ai:
+    description: ИИ команды
+    permission: aicreater.use
+
+permissions:
+  aicreater.use:
+    default: true

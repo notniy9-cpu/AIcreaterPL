@@ -20,6 +20,11 @@ public class AICommandExecutor implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "У вас нет прав!");
             return true;
         }
+        // Добавьте в метод onCommand перед остальными проверками:
+        if (args[0].equalsIgnoreCase("test")) {
+            sender.sendMessage("§aТест: API работает!");
+            return true;
+        }
 
         if (args.length == 0) {
             sendHelp(sender);
