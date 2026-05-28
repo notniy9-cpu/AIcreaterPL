@@ -1,0 +1,4 @@
+name: AICreaterPL
+version: '1.0-SNAPSHOT'
+main: org.Main.aICreaterPL.AICreaterPL
+api-version: '1.20'
